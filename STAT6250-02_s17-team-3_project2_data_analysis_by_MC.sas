@@ -26,30 +26,104 @@ X "cd ""%substr(%sysget(SAS_EXECFILEPATH),1,%eval(%length(%sysget(SAS_EXECFILEPA
 *******************************************************************************;
 * Research Question Analysis Starting Point;
 *******************************************************************************;
+
+title1
+'Research Question: Which ethnic group had the highest increase in their number of graduate students between 2014 to 2015?'
+;
+
+title2
+'Rationale:It is important to know that every ethnicity graduates at the same, consistent rate, so finding out an increase to one ethnic group would be crucial to know.'
+;
+
 *
-Question: Which ethnic groups increased their number of graduate students between 2014 to 2015?
-Rationale:It is important to know that every ethnicity graduates at the same, consistent rate, so finding out an increase to one ethnic group would be crucial to know.
-Note:
-Methodology: 
-Limitations: 
-Followup Steps: 
+Note:  This experiment will test the columns "Hispanic", "Asian", "African
+American", and "White" from Grad13-14 and Grad 14-15.
+
+Methodology:  Use PROC PRINT for both datasets while using the SUM statement to
+calculate the totals of each column.  Then combine the GradRates14 and
+GradRates 15 files, and then take the difference of the alike columns from the
+two datsets before drawing conclusions.
+
+Limitations: The other ethnic groups have too few students in California to
+make a valid conclusion compared to the four that are, so they would have to
+be omitted for this purpose.
+
+Followup Steps:  Perhaps analyzing the percentage of graduate increase among
+the ethnic groups so that all ethnicities are fairly represented.
+;
+
+proc print data=Graduates_analytic_file;
+sum Hispanic Asian African_American White;
+run;
+
+title;
+footnote;
+
 *******************************************************************************;
 * Research Question Analysis Starting Point;
 *******************************************************************************;
+
+title1
+'Research Question:  What are the top five school districts that have the highest percentage of graduate students?'
+;
+
+title2
+'Rationale: Knowing which areas of California succeed the highest in education is a major factor to be looked at because it can determine where parents would want to send their children to school at.'
+;
+
 *
-Question:  What are the top five school district have the highest percentage of graduate students?
-Rationale: Knowing which areas of California succeed the highest in education is a major factor to be looked at because it can determine where parents would want to send their children to school at.
-Note:
-Methodology: 
-Limitations: 
-Followup Steps: 
+Note:  This will be looking at the "GRADRATES" column from the GradRates data
+file.
+
+Methodology:  Use PROC SORT on the "GRADRATES" column, then examine the five
+school districts with the highest graduation rate percentage.
+
+Limitations: Since the total school district data is combined with the
+individual schools, it may be difficult to properly read the percentages from
+the districts.
+
+Followup Steps: Separate the school district rows from the individual schools
+so that the new data can be properly read.
+;
+
+proc sort data=Graduates_analytic_file;
+by descending Gradrates;
+run;
+
+title;
+footnote;
+
 *******************************************************************************;
 * Research Question Analysis Starting Point;
 *******************************************************************************;
+
+title1
+'Research Question: Which school had the highest increase number of graduate students between 2014 to 2015?'
+;
+
+title2
+'Rationale: Being the school with the highest graduate increase in in the state in terms of graduating is a remarkable achievement in any case, so that school deserves to be figured out and recognized.'
+; 
+
 *
-Question: Which school had the highest increase number of graduate students between 2014 to 2015?
-Rationale: Being the school with the highest graduate increase in in the state in terms of graduating is a remarkable achievement in any case, so that school deserves to be figured out and recognized.  
-Note:
-Methodology: 
-Limitations: 
-Followup Steps: 
+Note:  We will use the "TOTAL" column for the Grads13-14 and Grads14-15.
+
+Methodology: Combine the GradRates14 and GradRates 15 files, then take the
+difference from the "TOTAL" columns in the two datasets and place them in a new
+variable.  Then, use PROC SORT to arrange the differences in order and then use
+PROC PRINT to display the results before drawing conclusions.
+
+Limitations: As with question 1, smaller schools have a less likely chance of
+being recognized for their increase in graduates even if their number
+doubles from the previous year.
+
+Followup Steps: Create a column for percentage increase per school.  Then, draw
+comparisons from both the "percentage" and "total" columns to have a more accurate analysis.
+;
+
+proc sort data=Total_Graduates_analytic_file;
+by difference;
+run;
+
+proc print data=Total_Graduates_analytic_file;
+run;
