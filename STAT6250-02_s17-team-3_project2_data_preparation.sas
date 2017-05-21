@@ -99,7 +99,7 @@ https://github.com/stat6250/team-3_project2/blob/master/data/GradRates.xls?raw=t
 %let inputDataset3Type = XLS;
 %let inputDataset3DSN = GradRates_raw;
 
-* load raw datasets over the wire, if they doesn't already exist;
+* load raw datasets over the wire, if they don't already exist;
 %macro loadDataIfNotAlreadyAvailable(dsn,url,filetype);
     %put &=dsn;
     %put &=url;
@@ -143,3 +143,109 @@ https://github.com/stat6250/team-3_project2/blob/master/data/GradRates.xls?raw=t
     &inputDataset3URL.,
     &inputDataset3Type.
 )
+
+* sort and check raw datasets for duplicates with respect to their unique ids,
+  removing blank rows, if needed;
+  
+proc sort
+        nodupkey
+        data=Grads1314_raw
+        dupout=Grads1314_raw_dups
+        out=Grads1314_raw_sorted
+    ;
+    by
+        CDS_CODE
+    ;
+run;
+
+proc sort
+        nodupkey
+        data=Grads1415_raw
+        dupout=Grads1415_raw_dups
+        out=Grads1415_raw_sorted
+    ;
+    by
+        CDS_CODE
+    ;
+run;
+
+proc sort
+        nodupkey
+        data=GradRates_raw
+        dupout=GradRates_raw_dups
+        out=GradRates_raw_sorted
+    ;
+    by
+        CDS_CODE
+    ;
+run;
+
+* combine Grads1314 and Grads1415 data vertically
+
+data Grads1315_Vert;
+    retain
+        CDS_CODE
+    ;
+    length
+        CDS_CODE $14.
+    ;
+    set
+        Grads1314_raw_sorted
+        Grads1415_raw_sorted
+    ;
+
+* build analytic dataset from raw datasets to address research questions in
+corresponding data-analysis files;
+
+data Graduates_analytic_file;
+    retain
+        CDS_CODE
+        COUNTY
+        DISTRICT
+        SCHOOL
+        HISPANIC
+        AM_IND
+        ASIAN
+        PAC_ISLD
+        FILIPINO
+        AFRICAN_AM
+        WHITE
+        TWO_MORE_RACES
+        NOT_REPORTED
+        TOTAL
+        D9
+        D10
+        D11
+        D12
+        GRADS
+        GRADRATE
+    ;
+    keep
+        CDS_CODE
+        COUNTY
+        DISTRICT
+        SCHOOL
+        HISPANIC
+        AM_IND
+        ASIAN
+        PAC_ISLD
+        FILIPINO
+        AFRICAN_AM
+        WHITE
+        TWO_MORE_RACES
+        NOT_REPORTED
+        TOTAL
+        D9
+        D10
+        D11
+        D12
+        GRADS
+        GRADRATE
+    ;
+    merge
+        Grads1315_Vert
+        GradRates_raw_sorted
+    ;
+    by
+        CDS_Code
+    ;
