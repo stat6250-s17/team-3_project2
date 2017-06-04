@@ -35,6 +35,13 @@ title2
 'Rationale:It is important to know that every ethnicity graduates at the same, consistent rate, so finding out an increase to one ethnic group would be crucial to know.'
 ;
 
+footnote1
+'Hispanics had by far the highest increase in graduate students from the two years measured in California.'
+;
+
+footnote2
+'White and African Americans had a slight increase in graduates, while Asians actually had a decrease.'
+;
 *
 Note:  This experiment will test the columns "Hispanic", "Asian", "African
 American", and "White" from Grad13-14 and Grad 14-15.
@@ -52,8 +59,18 @@ Followup Steps:  Perhaps analyzing the percentage of graduate increase among
 the ethnic groups so that all ethnicities are fairly represented.
 ;
 
-proc print data=Graduates_analytic_file;
+proc print data=Grads1314_raw;
+var CDS_CODE Hispanic Asian African_American White;
 sum Hispanic Asian African_American White;
+run;
+
+proc print data=Grads1415_raw;
+var CDS_CODE Hispanic Asian African_American White;
+sum Hispanic Asian African_American White;
+run;
+
+proc sort data=Total_Graduates_analytic_file;
+by difference;
 run;
 
 title;
@@ -71,6 +88,13 @@ title2
 'Rationale: Knowing which areas of California succeed the highest in education is a major factor to be looked at because it can determine where parents would want to send their children to school at.'
 ;
 
+footnote1
+'Palos Verdes Peninsula Unified and Poway Unified had the highest gradrate of all school districts in California at 99.8%.'
+;
+
+footnote2
+'Acalanes, Capistrano, and San Ramon Valley are the other school districts among the top five highest gradrates.'
+;
 *
 Note:  This will be looking at the "GRADRATES" column from the GradRates data
 file.
@@ -105,6 +129,13 @@ title2
 'Rationale: Being the school with the highest graduate increase in in the state in terms of graduating is a remarkable achievement in any case, so that school deserves to be figured out and recognized.'
 ; 
 
+footnote1
+'Paramount High had the highest increase at over 1000 students, about 200 more than the next highest increase.'
+;
+
+footnote2
+'Interesting to note that Paramount had just 3 graduates in 13-14 as opposed to 1053 the following year.'
+;
 *
 Note:  We will use the "TOTAL" column for the Grads13-14 and Grads14-15.
 
