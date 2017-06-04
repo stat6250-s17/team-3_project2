@@ -72,6 +72,9 @@ proc means
     ;
 run;
 
+title;
+footnote;
+
 
 
 *******************************************************************************;
@@ -119,6 +122,9 @@ proc means
     ;
 run;
 
+title;
+footnote;
+
 
 
 *******************************************************************************;
@@ -145,7 +151,7 @@ footnote3
 ‘Both San Diego Unified and Kern Union High have more than 7,500 graduates.’
 ;
 
-Methodology: Use proc sort by descending to get districts with most graduates. After that, use proc print to display first ten rows for the GRADS column. Then compare the numbers. 
+Methodology: Use proc sort by descending to get districts with most graduates. After that, use proc print to display first three rows for the GRADS column. Then compare the numbers. 
 
 Limitations: None
 
@@ -162,6 +168,9 @@ proc print
         DISTRICT GRADS;
     ;
 run;
+
+title;
+footnote;
 
 
 
