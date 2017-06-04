@@ -249,3 +249,17 @@ data Graduates_analytic_file;
     by
         CDS_Code
     ;
+
+*
+Use PROC SORT to create a temporary sorted table in descending order by
+Total_Graduates_Rate_Change and output the results to a temporary 
+dataset which will be used as part of data analysis by DL.
+;
+ 
+proc sort
+        data=Graduates_analytic_file
+        out=Graduates_analytic_file_sorted
+    ;
+    by 
+        descending Total_Graduates_Rate_Change;
+run;
