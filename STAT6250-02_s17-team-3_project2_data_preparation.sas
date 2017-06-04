@@ -263,3 +263,14 @@ proc sort
     by 
         descending Total_Graduates_Rate_Change;
 run;
+
+*
+Use proc sort to create a temporary sorted table in descending GRADS which will be used as part of data analysis by LZ.
+;
+
+proc sort
+        data=Graduates_analytic_file
+    ;
+    by 
+        descending GRADS;
+run;
