@@ -151,6 +151,8 @@ footnote3
 ‘Both San Diego Unified and Kern Union High have more than 7,500 graduates.’
 ;
 
+Note: This compare each dictrict's total graduates from GradRates.
+
 Methodology: Use proc sort by descending to get districts with most graduates. After that, use proc print to display first three rows for the GRADS column. Then compare the numbers. 
 
 Limitations: None
