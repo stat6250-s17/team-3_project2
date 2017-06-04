@@ -28,11 +28,11 @@ X "cd ""%substr(%sysget(SAS_EXECFILEPATH),1,%eval(%length(%sysget(SAS_EXECFILEPA
 *******************************************************************************;
 *
 title1
-'Research Question:Did the total number of Hispanic graduates increase from AY2013-2014 to AY2014-2015?'
+'Research Question: Did the total number of Hispanic graduates increase from AY2013-2014 to AY2014-2015?'
 ;
 
 title2
-'Rationale:Hispanic graduates forms a large proportion of the total number of graduates. Therefore, it’s necessary to compare Hispanic student’s changing graduation rate.'
+'Rationale: Hispanic graduates forms a large proportion of the total number of graduates. Therefore, it’s necessary to compare Hispanic student’s changing graduation rate.'
 ;
 
 footnote1
@@ -43,13 +43,13 @@ footnote2
 ‘The amount of Hispanic graduate is increasing year by year.’
 ;
 
-Note:This compares the column "HISPANIC" from Grads1314 to the column of the same name from Grads1415.
+Note: This compares the column "HISPANIC" from Grads1314 to the column of the same name from Grads1415.
 
-Methodology:Merge two datasets and use RENAME= option to rename the column “HISPANIC” from dataset Grads1415 as HISPANIC1415. After that, use proc means to get the sum for the columns "HISPANIC" and “HISPANIC1415”. Then compare numbers. 
+Methodology: Merge two datasets and use RENAME= option to rename the column “HISPANIC” from dataset Grads1415 as HISPANIC1415. After that, use proc means to get the sum for the columns "HISPANIC" and “HISPANIC1415”. Then compare numbers. 
 
-Limitations:None
+Limitations: None
 
-Followup Steps:Possibly use other methods instead of using RENAME= option.
+Followup Steps: Possibly use other methods instead of using RENAME= option.
 ;
 
 data Grads1314Grads1415; 
