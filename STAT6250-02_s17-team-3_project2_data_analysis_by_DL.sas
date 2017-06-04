@@ -27,7 +27,6 @@ X "cd ""%substr(%sysget(SAS_EXECFILEPATH),1,%eval(%length(%sysget(SAS_EXECFILEPA
 *******************************************************************************;
 * Research Question Analysis Starting Point;
 *******************************************************************************;
-*
 
 title1
 'Research Question: What are the top five California High Schools that experienced the biggest increase in total number of graduates between 2013-2014 and 2014-2015?'
@@ -80,7 +79,6 @@ footnote;
 *******************************************************************************;
 * Research Question Analysis Starting Point;
 *******************************************************************************;
-*
 
 title1
 'Research Question: What are the top five schools with the highest graduation rate?'
