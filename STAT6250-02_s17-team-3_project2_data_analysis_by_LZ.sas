@@ -27,9 +27,21 @@ X "cd ""%substr(%sysget(SAS_EXECFILEPATH),1,%eval(%length(%sysget(SAS_EXECFILEPA
 * Research Question Analysis Starting Point;
 *******************************************************************************;
 *
-Question:Did the total number of Hispanic graduates increase from AY2013-2014 to AY2014-2015?
+title1
+'Research Question:Did the total number of Hispanic graduates increase from AY2013-2014 to AY2014-2015?'
+;
 
-Rationale:Hispanic graduates forms a large proportion of the total number of graduates. Therefore, it’s necessary to compare Hispanic student’s changing graduation rate. 
+title2
+'Rationale:Hispanic graduates forms a large proportion of the total number of graduates. Therefore, it’s necessary to compare Hispanic student’s changing graduation rate.'
+;
+
+footnote1
+‘Academic year 2014-2015 have more Hispanic graduates than academic year 2013-2014.’
+;
+
+footnote2
+‘The amount of Hispanic graduate is increasing year by year.’
+;
 
 Note:This compares the column "HISPANIC" from Grads1314 to the column of the same name from Grads1415.
 
@@ -66,9 +78,25 @@ run;
 * Research Question Analysis Starting Point;
 *******************************************************************************;
 *
-Question: Which race/ethnic students has the most graduates in AY2014-2015?
+title1
+'Research Question: Which race/ethnic students has the most graduates in AY2014-2015?'
+;
 
-Rationale: This would help identify recent year’s highest graduation rate by ethnicity.
+title2
+'Rationale: This would help identify recent year’s highest graduation rate by ethnicity.'
+;
+
+footnote1
+‘Hispanic has the most graduates in academic year 2013-2014.’
+;
+
+footnote2
+‘White students ranked second.’
+;
+
+footnote3
+‘Pacific island has the least graduates in academic year 2014-2015.’
+;
 
 Note: This compares the column "HISPANIC", “AM_IND”, “ASIAN”, PAC_ISLD”, FILIPINO”, “AFRICAN_AM”, and” WHITE” from Grads1415.
 
@@ -97,9 +125,25 @@ run;
 * Research Question Analysis Starting Point;
 *******************************************************************************;
 *
-Question: What are the top ten districts have the most graduates？
+title1
+'Research Question: What are the top three districts have the most graduates？'
+;
 
-Rationale: This would help identify which district is more welcome or which district has higher education level.  
+title2
+'Rationale: This would help identify which district is more welcome or which district has higher education level.'
+;
+
+footnote1
+‘Los Angeles Unified, San Diego Unified, and Kern Union High are the top three districts have the most graduates.’
+;
+
+footnote2
+‘Los Angeles Unified has more than 30,000 graduates which is significantly higher than other districts.’
+;
+
+footnote3
+‘Both San Diego Unified and Kern Union High have more than 7,500 graduates.’
+;
 
 Methodology: Use proc sort by descending to get districts with most graduates. After that, use proc print to display first ten rows for the GRADS column. Then compare the numbers. 
 
@@ -108,13 +152,8 @@ Limitations: None
 Followup Steps: Possibly get the sum of graduates for each district then compare. 
 ;
 
-proc sort
-        data=Graduates_analytic_file
-    ;
-by descending GRADS;
-run;
 proc print 
-        data=Graduates_analytic_file(obs=10)
+        data=Graduates_analytic_file(obs=3)
     ;
     id 
         CDS_CODE
