@@ -47,6 +47,7 @@ footnote2
 Note: This compares the column "Total" from Grads1314to the column of the same 
 name from Grads1415.
 
+*
 Methodology: When combining the files Grads1314 and Grads1415 in data
 preparation, take the difference of values of the column Total for each school
 and create a new variable called Total_Graduates_Rate_Change. After, use proc
@@ -96,6 +97,7 @@ footnote2
 'These five schools are the best at making sure their students graduate. They should be researched to see if they use any interesting stratagies for this.'
 ;
 
+*
 Methodology: Use PROC PRINT to print out the first twenty observations
 for the GRADRATE column in the temporary dataset created in the data prep file. 
 Then compare the graduation rates.
@@ -140,6 +142,7 @@ footnote2
 'This shows that we need to start early with counseling and making sure students are focused from an early age.'
 ;
 
+*
 Methodology: Use proc means to find the sum for the columns D9, D10, D11, and 
 D12 in the Graduates_analytic_file file created in data.
 preparation. Then see which one has the highest number.
