@@ -180,7 +180,7 @@ proc sort
     ;
 run;
 
-* combine Grads1314 and Grads1415 data vertically;
+* combine Grads1314 and Grads1415 data vertically and convert CDS_Code column to character;
 
 data Grads1315_Vert;
     retain
@@ -190,10 +190,45 @@ data Grads1315_Vert;
         CDS_CODE $14.
     ;
     set
-        Grads1314_raw_sorted
-        Grads1415_raw_sorted
+        Grads1314_raw_sorted(rename=(CDS_Code=CDS_Codenum))
+        Grads1415_raw_sorted(rename=(CDS_Code=CDS_Codenum))
+	;
+	CDS_Code=put(CDS_Codenum, z14.)
+	;
+	drop CDS_Codenum
     ;
+run;
 
+* Sort Grads1315_Vert by CDS_Code;
+
+proc sort
+        nodupkey
+        data=Grads1315_Vert
+        dupout=Grads1315_vert_dups
+        out=Grads1315_Vert_sorted
+    ;
+    by
+        CDS_CODE
+    ;
+run;
+* Convert CDS_Code column to character for Gradrates_raw_sorted;
+
+data Gradrates_raw_sorted;
+retain
+        CDS_CODE
+    ;
+    length
+        CDS_CODE $14.
+    ;
+    set
+        Gradrates_raw_sorted(rename=(CDS_Code=CDS_Codenum))
+	;
+	CDS_Code=put(CDS_Codenum, z14.)
+	;
+	drop CDS_Codenum
+    ;
+run;
+	
 * build analytic dataset from raw datasets to address research questions in
 corresponding data-analysis files;
 
@@ -243,25 +278,26 @@ data Graduates_analytic_file;
         GRADRATE
     ;
     merge
-        Grads1315_Vert
+        Grads1315_Vert_sorted
         GradRates_raw_sorted
     ;
     by
         CDS_Code
     ;
+run;
 
 *
 Use PROC SORT to create a temporary sorted table in descending order by
-Total_Graduates_Rate_Change and output the results to a temporary 
+Total and output the results to a temporary 
 dataset which will be used as part of data analysis by DL.
 ;
  
 proc sort
         data=Graduates_analytic_file
-        out=Graduates_analytic_file_sorted
+        out=Graduates_analytic_file_Total
     ;
     by 
-        descending Total_Graduates_Rate_Change;
+        descending TOTAL;
 run;
 
 *
@@ -270,6 +306,7 @@ Use proc sort to create a temporary sorted table in descending GRADS which will 
 
 proc sort
         data=Graduates_analytic_file
+		out=Graduates_analytic_file_GRADS
     ;
     by 
         descending GRADS;

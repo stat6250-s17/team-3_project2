@@ -29,22 +29,22 @@ X "cd ""%substr(%sysget(SAS_EXECFILEPATH),1,%eval(%length(%sysget(SAS_EXECFILEPA
 *******************************************************************************;
 
 title1
-'Research Question: What are the top five California High Schools that experienced the biggest increase in total number of graduates between 2013-2014 and 2014-2015?'
+'Research Question: What are the top ten California High Schools that had the highest number of total high school graduates?'
 ;
 
 title2
-'Rationale: This would be interesting to find out to see if more students are graduating from high school as years go by.'
+'Rationale: This would be interesting to find out to see which schools are the most successful at having their students graduate.'
 ;
 
 footnote1
-'The top five California High Schools are: California School for the Blind, Alameda High, Argonaut High, Forest Charter, and Vantage Point Charter.'
+'The top ten California High Schools are:'
 ;
 
 footnote2
-'This shows that these schools really improved their graduation rates and they would be good schools to study for other schools wishing to increase their graduation rates.'
+'This shows that'
 ;
 
-Note: This compares the column "Total" from Grads1314to the column of the same 
+*Note: This compares the column "Total" from Grads1314to the column of the same 
 name from Grads1415.
 
 *
@@ -65,13 +65,13 @@ the bottom ten schools in terms of total graduates.
 ;
 
 proc print 
-        data=Graduates_analytic_file_sorted(obs=10)
+        data=Graduates_analytic_file_Total(obs=10)
     ;
     id 
         CDS_CODE
     ;
     var 
-        Total_Graduates_Rate_Change
+        SCHOOL TOTAL
     ;
 run; 
 title;
