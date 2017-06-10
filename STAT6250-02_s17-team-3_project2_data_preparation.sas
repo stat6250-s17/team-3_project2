@@ -82,21 +82,21 @@ for visualization.
 
 * setup environmental parameters;
 %let inputDataset1URL =
-https://github.com/stat6250/team-3_project2/blob/master/data/Grads1314.xls?raw=true
+https://github.com/stat6250/team-3_project2/blob/master/data/Grads1314.xlsx?raw=true
 ;
-%let inputDataset1Type = XLS;
+%let inputDataset1Type = XLSX;
 %let inputDataset1DSN = Grads1314_raw;
 
 %let inputDataset2URL =
-https://github.com/stat6250/team-3_project2/blob/master/data/Grads1415.xls?raw=true
+https://github.com/stat6250/team-3_project2/blob/master/data/Grads1415.xlsx?raw=true
 ;
-%let inputDataset2Type = XLS;
+%let inputDataset2Type = XLSX;
 %let inputDataset2DSN = Grads1415_raw;
 
 %let inputDataset3URL =
-https://github.com/stat6250/team-3_project2/blob/master/data/GradRates.xls?raw=true
+https://github.com/stat6250/team-3_project2/blob/master/data/GradRates.xlsx?raw=true
 ;
-%let inputDataset3Type = XLS;
+%let inputDataset3Type = XLSX;
 %let inputDataset3DSN = GradRates_raw;
 
 * load raw datasets over the wire, if they don't already exist;
@@ -180,7 +180,7 @@ proc sort
     ;
 run;
 
-* combine Grads1314 and Grads1415 data vertically
+* combine Grads1314 and Grads1415 data vertically;
 
 data Grads1315_Vert;
     retain
