@@ -18,93 +18,7 @@ See included file for dataset properties
 * environmental setup;
 
 * set relative file import path to current directory (using standard SAS trick);
-
-%let inputDataset3URL =
-https://github.com/stat6250/team-3_project2/blob/master/data/GradRates.xlsx?raw=true
-;
-%let inputDataset3Type = XLSX;
-%let inputDataset3DSN = GradRates_raw;
-
-* load raw datasets over the wire, if they don't already exist;
-%macro loadDataIfNotAlreadyAvailable(dsn,url,filetype);
-    %put &=dsn;
-    %put &=url;
-    %put &=filetype;
-    %if
-        %sysfunc(exist(&dsn.)) = 0
-    %then
-        %do;
-            %put Loading dataset &dsn. over the wire now...;
-            filename tempfile "%sysfunc(getoption(work))/tempfile.xlsx";
-            proc http
-                method="get"
-                url="&url."
-                out=tempfile
-                ;
-            run;
-            proc import
-                file=tempfile
-                out=&dsn.
-                dbms=&filetype.;
-            run;
-            filename tempfile clear;
-        %end;
-    %else
-        %do;
-            %put Dataset &dsn. already exists. Please delete and try again.;
-        %end;
-%mend;
-%loadDataIfNotAlreadyAvailable(
-    &inputDataset1DSN.,
-    &inputDataset1URL.,
-    &inputDataset1Type.
-)
-%loadDataIfNotAlreadyAvailable(
-    &inputDataset2DSN.,
-    &inputDataset2URL.,
-    &inputDataset2Type.
-)
-%loadDataIfNotAlreadyAvailable(
-    &inputDataset3DSN.,
-    &inputDataset3URL.,
-    &inputDataset3Type.
-)
-
-* sort and check raw datasets for duplicates with respect to their unique ids,
-  removing blank rows, if needed;
-  
-proc sort
-        nodupkey
-        data=Grads1314_raw
-        dupout=Grads1314_raw_dups
-        out=Grads1314_raw_sorted
-    ;
-    by
-        CDS_CODE
-    ;
-run;
-
-proc sort
-        nodupkey
-        data=Grads1415_raw
-        dupout=Grads1415_raw_dups
-        out=Grads1415_raw_sorted
-    ;
-    by
-        CDS_CODE
-    ;
-run;
-
-proc sort
-        nodupkey
-        data=GradRates_raw
-        dupout=GradRates_raw_dups
-        out=GradRates_raw_sorted
-    ;
-    by
-        CDS_CODE
-    ;
-run;
+X "cd ""%substr(%sysget(SAS_EXECFILEPATH),1,%eval(%length(%sysget(SAS_EXECFILEPATH))-%length(%sysget(SAS_EXECFILENAME))))""";
 
 
 * load external file that generates analytic dataset cde_2014_analytic_file;
@@ -123,16 +37,32 @@ title2
 ;
 
 footnote1
+'Though it is not entirely clear, each county or school district total has about a 20-30% dropout rate when compared to total graduates.'
 ;
 
 footnote2
+'The county/school district with the highest number of graduates, Los Angeles county, has about a 30% dropout rate.'
 ;
+
 *
+Note:  This experiment will test the columns "D9", "D10", "D11", and "D12" and
+will be compared to "GRADS" (only School Districts and Counties will be
+compared).
 
+Methodology:  Use PROC SORT on the "GRADS" column, then use PROC PRINT to
+compare the number of graduates of the top 30 school districts/counties to
+their number of dropouts.
 
+Limitations: Due to School Districts and Counties having more students than an
+individual school, we can't really answer this question when comparing schools
+unless we delete the district and county rows.
 
+Followup Steps:  Maybe use the total number of dropout students per school and
+compare to the total number graduated.
 ;
 
+proc print data=Graduates_analytic_file_MC1(obs=31);
+	var County District School D9 D10 D11 D12 Grads;
 run;
 
 title;
@@ -171,6 +101,8 @@ Followup Steps: Separate the school district rows from the individual schools
 so that the new data can be properly read.
 ;
 
+proc print data=Graduates_analytic_file_MC2(obs=4);
+		var District Gradrate;
 run;
 
 title;
@@ -215,5 +147,9 @@ Followup Steps: Perhaps using this method on the top individual schools instead
 of the counties to get a more specific analysis.
 ;
 
+proc print data=Graduates_analytic_file_MC3(obs=12);
+		var County Grads Gradrate;
 run;
 
+title;
+footnote;
