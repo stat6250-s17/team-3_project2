@@ -324,3 +324,33 @@ proc sort
     by 
         descending GRADS;
 run;
+
+*
+Methodology:  Use PROC MEANS to calculate the total number of graduates per
+school by ethnicity along with total students.  Then, make comparisons and draw
+conclusions from the results, which will be done as part of data analysis by MC.
+;
+
+proc means data=Graduates_analytic_file;
+	var Hispanic Asian African_Am White Total;
+run;
+
+*
+Methodology:  Use PROC SORT on the "GRADRATES" column, then use PROC PRINT to
+examine the four school districts with the highest graduation rate percentage,
+which will be done as part of data analysis by MC.
+;
+
+proc sort data=Graduates_analytic_file;
+	by descending Gradrate;
+run;
+
+*
+Methodology: Use PROC SORT on the "GRADS" column, then use PROC PRINT to
+compare the counties with the top graduate students to their grad rate, which
+will be done as part of data analysis by MC.
+;
+
+proc sort data=Graduates_analytic_file;
+	by descending Grads;
+run;
