@@ -11,23 +11,13 @@ Schools
 Dataset Name: Graduates_analytic_file created in external file
 STAT6250-02_s17-team-3_project2_data_preparation.sas, which is assumed to be
 in the same directory as this file
+
 See included file for dataset properties
 ;
 
 * environmental setup;
 
 * set relative file import path to current directory (using standard SAS trick);
-%let inputDataset1URL =
-https://github.com/stat6250/team-3_project2/blob/master/data/Grads1314.xlsx?raw=true
-;
-%let inputDataset1Type = XLSX;
-%let inputDataset1DSN = Grads1314_raw;
-
-%let inputDataset2URL =
-https://github.com/stat6250/team-3_project2/blob/master/data/Grads1415.xlsx?raw=true
-;
-%let inputDataset2Type = XLSX;
-%let inputDataset2DSN = Grads1415_raw;
 
 %let inputDataset3URL =
 https://github.com/stat6250/team-3_project2/blob/master/data/GradRates.xlsx?raw=true
@@ -116,150 +106,33 @@ proc sort
     ;
 run;
 
-* combine Grads1314 and Grads1415 data vertically and convert CDS_Code column to character;
 
-data Grads1315_Vert;
-    retain
-        CDS_CODE
-    ;
-    length
-        CDS_CODE $14.
-    ;
-    set
-        Grads1314_raw_sorted(rename=(CDS_Code=CDS_Codenum))
-        Grads1415_raw_sorted(rename=(CDS_Code=CDS_Codenum))
-	;
-	CDS_Code=put(CDS_Codenum, z14.)
-	;
-	drop CDS_Codenum
-    ;
-run;
-
-* Sort Grads1315_Vert by CDS_Code;
-
-proc sort
-        nodupkey
-        data=Grads1315_Vert
-        dupout=Grads1315_vert_dups
-        out=Grads1315_Vert_sorted
-    ;
-    by
-        CDS_CODE
-    ;
-run;
-* Convert CDS_Code column to character for Gradrates_raw_sorted;
-
-data Gradrates_raw_sorted;
-retain
-        CDS_CODE
-    ;
-    length
-        CDS_CODE $14.
-    ;
-    set
-        Gradrates_raw_sorted(rename=(CDS_Code=CDS_Codenum))
-	;
-	CDS_Code=put(CDS_Codenum, z14.)
-	;
-	drop CDS_Codenum
-    ;
-run;
-	
-* build analytic dataset from raw datasets to address research questions in
-corresponding data-analysis files;
-
-data Graduates_analytic_file;
-    retain
-        CDS_CODE
-        COUNTY
-        DISTRICT
-        SCHOOL
-        HISPANIC
-        AM_IND
-        ASIAN
-        PAC_ISLD
-        FILIPINO
-        AFRICAN_AM
-        WHITE
-        TWO_MORE_RACES
-        NOT_REPORTED
-        TOTAL
-        D9
-        D10
-        D11
-        D12
-        GRADS
-        GRADRATE
-    ;
-    keep
-        CDS_CODE
-        COUNTY
-        DISTRICT
-        SCHOOL
-        HISPANIC
-        AM_IND
-        ASIAN
-        PAC_ISLD
-        FILIPINO
-        AFRICAN_AM
-        WHITE
-        TWO_MORE_RACES
-        NOT_REPORTED
-        TOTAL
-        D9
-        D10
-        D11
-        D12
-        GRADS
-        GRADRATE
-    ;
-    merge
-        Grads1315_Vert_sorted
-        GradRates_raw_sorted
-    ;
-    by
-        CDS_Code
-    ;
-run;
+* load external file that generates analytic dataset cde_2014_analytic_file;
+%include '.\STAT6250-02_s17-team-3_project2_data_preparation.sas';
 
 *******************************************************************************;
 * Research Question Analysis Starting Point;
 *******************************************************************************;
 
 title1
-'Research Question: How many graduates per school are there when sorted by ethnicity and how do they compare to the total number of students per school.'
+'Research Question: How do the top 30 school areas of California in total graduate students compare to their dropout student numbers.'
 ;
 
 title2
-'Rationale:  Being that California is very diverse, it would interesting to see the proportion of graduates by their ethnicity .'
+'Rationale:  It would be intriguing to see if the areas with the highest number of graduates would also be among the highest number of dropouts.'
 ;
 
 footnote1
-'Hispanics had by far the highest average of graduates at 78.11 per school, nearly half as much as the total number of students.'
 ;
 
 footnote2
-'White is a distant second at 46.15, while Asians and African Americans are well below at 15.86 and 9.99 respectively.'
 ;
 *
-Note:  This experiment will test the columns "Hispanic", "Asian", "African
-American", "White",  and "Total".
 
-Methodology:  Use PROC MEANS to calculate the total number of graduates per
-school by ethnicity along with total students.  Then, make comparisons and draw
-conclusions from the results.
 
-Limitations: The other ethnic groups have too few students in California to
-make a valid conclusion compared to the four that are, so they would have to
-be omitted for this purpose.  Also, certain schools have too few students as
-well, so the actual number of graduates per school is skewed.
 
-Followup Steps:  Perhaps analyzing the percentage of graduates among the ethnic
-groups so that all ethnicities are fairly represented.
 ;
 
-proc means data=Graduates_analytic_file;
-	var Hispanic Asian African_Am White Total;
 run;
 
 title;
@@ -298,13 +171,7 @@ Followup Steps: Separate the school district rows from the individual schools
 so that the new data can be properly read.
 ;
 
-proc sort data=Graduates_analytic_file;
-	by descending Gradrate;
 run;
-
-proc print data=Graduates_analytic_file(obs=4);
-	var CDS_CODE District Gradrate;
-	run;
 
 title;
 footnote;
@@ -348,10 +215,5 @@ Followup Steps: Perhaps using this method on the top individual schools instead
 of the counties to get a more specific analysis.
 ;
 
-proc sort data=Graduates_analytic_file;
-	by descending Grads;
 run;
 
-proc print data=Graduates_analytic_file(obs=12);
-	var County Grads Gradrate;
-run;
